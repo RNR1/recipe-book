@@ -1,5 +1,6 @@
+import { RecipesResolverService } from './recipe-book/recipes-resolver.service';
 import { RecipeDetailComponent } from './recipe-book/recipe-detail/recipe-detail.component';
-import { RecipeItemComponent } from './recipe-book/recipe-list/recipe-item/recipe-item.component';
+
 import { RecipeBookComponent } from './recipe-book/recipe-book.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -14,10 +15,22 @@ const appRoutes: Routes = [
     path: 'recipes',
     component: RecipeBookComponent,
     children: [
-      { path: '', component: NoRecipeSelectedComponent },
+      {
+        path: '',
+        component: NoRecipeSelectedComponent,
+        resolve: [RecipesResolverService],
+      },
       { path: 'new', component: RecipeEditComponent },
-      { path: ':id', component: RecipeDetailComponent },
-      { path: ':id/edit', component: RecipeEditComponent },
+      {
+        path: ':id',
+        component: RecipeDetailComponent,
+        resolve: [RecipesResolverService],
+      },
+      {
+        path: ':id/edit',
+        component: RecipeEditComponent,
+        resolve: [RecipesResolverService],
+      },
     ],
   },
   { path: 'shopping-list', component: ShoppingListComponent },
