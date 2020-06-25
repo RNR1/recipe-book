@@ -6,7 +6,7 @@ const appRoutes: Routes = [
   {
     path: 'recipes',
     loadChildren: () =>
-      import('./recipe-book/recipes.module').then((m) => m.RecipesModule),
+      import('./recipes/recipes.module').then((m) => m.RecipesModule),
   },
   {
     path: 'shopping-list',
