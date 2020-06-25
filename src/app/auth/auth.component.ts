@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
 })
 export class AuthComponent {
   constructor(private authService: AuthService, private router: Router) {}
+
   isLoginMode = true;
   isLoading = false;
   error: string = null;
@@ -45,5 +46,9 @@ export class AuthComponent {
       }
     );
     form.reset();
+  }
+
+  onHandleError() {
+    this.error = null;
   }
 }
