@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../auth/auth-guard';
 import { NoRecipeSelectedComponent } from './no-recipe-selected/no-recipe-selected.component';
-import { RecipeBookComponent } from './recipes.component';
+import { RecipesComponent } from './recipes.component';
 import { RecipeEditComponent } from './recipe-edit/recipe-edit.component';
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 import { RecipesResolverService } from './recipes-resolver.service';
@@ -11,8 +11,9 @@ import { RecipesResolverService } from './recipes-resolver.service';
 const routes: Routes = [
   {
     path: '',
-    component: RecipeBookComponent,
+    component: RecipesComponent,
     canActivate: [AuthGuard],
+    resolve: [RecipesResolverService],
     children: [
       {
         path: '',
