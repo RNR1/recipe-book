@@ -14,7 +14,7 @@ import * as RecipeActions from './store/recipe.actions';
 import { Recipe } from './recipe.model';
 
 @Injectable({ providedIn: 'root' })
-export class RecipesResolverService implements Resolve<Recipe[]> {
+export class RecipesResolverService implements Resolve<{ recipes: Recipe[] }> {
   constructor(
     private store: Store<fromApp.AppState>,
     private actions$: Actions
@@ -25,10 +25,10 @@ export class RecipesResolverService implements Resolve<Recipe[]> {
       map(({ recipes }) => recipes),
       switchMap((recipes) => {
         if (!recipes.length) {
-          this.store.dispatch(new RecipeActions.FetchRecipes());
-          return this.actions$.pipe(ofType(RecipeActions.SET_RECIPES), take(1));
+          this.store.dispatch(RecipeActions.fetchRecipes());
+          return this.actions$.pipe(ofType(RecipeActions.setRecipes), take(1));
         } else {
-          return of(recipes);
+          return of({ recipes });
         }
       })
     );

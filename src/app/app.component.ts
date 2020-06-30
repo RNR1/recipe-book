@@ -12,6 +12,6 @@ import * as fromApp from './store/app.reducer';
 export class AppComponent implements OnInit {
   constructor(private store: Store<fromApp.AppState>) {}
   ngOnInit(): void {
-    this.store.dispatch(new AuthActions.AutoLogin());
+    this.store.dispatch(AuthActions.autoLogin());
   }
 }

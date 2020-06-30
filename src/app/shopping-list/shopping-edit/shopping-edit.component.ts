@@ -21,43 +21,41 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit(): void {
-    this.subscription = this.store.select('shoppingList').subscribe((state) => {
-      if (state.editedIngredientIndex > -1) {
-        this.editMode = true;
-        this.editedItem = state.editedIngredient;
-        this.shoppingListForm.setValue({
-          name: this.editedItem.name,
-          amount: this.editedItem.amount,
-        });
-      }
-    });
+    this.subscription = this.store
+      .select('shoppingList')
+      .subscribe(({ ingredients, editIndex: index }) => {
+        if (index > -1) {
+          this.editMode = true;
+          this.editedItem = ingredients[index];
+          const { name, amount } = this.editedItem;
+          this.shoppingListForm.setValue({ name, amount });
+        }
+      });
   }
 
   onSubmit(form: NgForm) {
     const { name, amount } = form.value;
-    const newIngredient = new Ingredient(name, amount);
+    const ingredient = new Ingredient(name, amount);
     if (this.editMode) {
-      this.store.dispatch(
-        new ShoppingListActions.UpdateIngredient(newIngredient)
-      );
+      this.store.dispatch(ShoppingListActions.updateIngredient({ ingredient }));
     } else {
-      this.store.dispatch(new ShoppingListActions.AddIngredient(newIngredient));
+      this.store.dispatch(ShoppingListActions.addIngredient({ ingredient }));
     }
     this.editMode = false;
     form.reset();
   }
   onDelete() {
-    this.store.dispatch(new ShoppingListActions.DeleteIngredient());
+    this.store.dispatch(ShoppingListActions.deleteIngredient());
     this.onClear();
   }
   onClear() {
     this.shoppingListForm.reset();
     this.editMode = false;
-    this.store.dispatch(new ShoppingListActions.StopEdit());
+    this.store.dispatch(ShoppingListActions.stopEdit());
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-    this.store.dispatch(new ShoppingListActions.StopEdit());
+    this.store.dispatch(ShoppingListActions.stopEdit());
   }
 }

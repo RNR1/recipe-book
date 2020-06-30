@@ -43,9 +43,8 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   onAddToShoppingList() {
-    this.store.dispatch(
-      new ShoppingListActions.AddIngredients(this.recipe.ingredients)
-    );
+    const ingredients = this.recipe.ingredients;
+    this.store.dispatch(ShoppingListActions.addIngredients({ ingredients }));
   }
 
   onEditRecipe() {
@@ -53,7 +52,8 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   onDeleteRecipe() {
-    this.store.dispatch(new RecipeActions.DeleteRecipe(this.id));
+    const index = this.id;
+    this.store.dispatch(RecipeActions.deleteRecipe({ index }));
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 }
